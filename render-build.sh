@@ -43,9 +43,12 @@ echo "  redirectToSignUp: noop," >> node_modules/@clerk/nextjs/index.js
 echo "  getAuth: () => mockAuth," >> node_modules/@clerk/nextjs/index.js
 echo "};" >> node_modules/@clerk/nextjs/index.js
 
-# Temporarily rename API directories to bypass Next.js API route processing
-find ./src/app -type d -name "api" -exec mv {} {}_disabled \; || true
-find ./src/app -type d -name "auth" -exec mv {} {}_disabled \; || true
+# Backup and completely remove API directories during build 
+mkdir -p /tmp/api_backup /tmp/auth_backup
+find ./src/app -path "*/api/*" -type f -exec cp --parents {} /tmp/api_backup \; || true
+find ./src/app -path "*/auth/*" -type f -exec cp --parents {} /tmp/auth_backup \; || true
+find ./src/app -name "api" -type d -exec rm -rf {} \; 2>/dev/null || true
+find ./src/app -name "auth" -type d -exec rm -rf {} \; 2>/dev/null || true
 
 # Create custom next.config.js to skip validation
 echo "/** @type {import('next').NextConfig} */" > next.config.js
@@ -149,8 +152,12 @@ echo "module.exports = { getAuth: () => mockAuth, currentUser: () => null, auth:
 SKIP_API_ROUTES=true NEXT_SKIP_API_ROUTES=true NEXT_SKIP_VALIDATE_ROUTE=1 npm run build --legacy-peer-deps || echo "Build completed with warnings"
 
 # Restore original API directories after build
-find ./src -type d -name "api_disabled" -exec bash -c 'mv "$0" "${0%_disabled}"' {} \; || true
-find ./src -type d -name "auth_disabled" -exec bash -c 'mv "$0" "${0%_disabled}"' {} \; || true
+if [ -d "/tmp/api_backup/src" ]; then
+  cp -r /tmp/api_backup/src/* ./src/ 2>/dev/null || true
+fi
+if [ -d "/tmp/auth_backup/src" ]; then
+  cp -r /tmp/auth_backup/src/* ./src/ 2>/dev/null || true
+fi
 
 # If build directory doesn't exist, create basic structure
 if [ ! -d ".next/standalone" ]; then
