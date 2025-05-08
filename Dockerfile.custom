@@ -15,7 +15,7 @@ RUN apk add --no-cache openssl openssl-dev postgresql-client
 # Install dependencies based on the preferred package manager (including dev dependencies)
 COPY package.json package-lock.json* ./
 RUN npm ci --legacy-peer-deps
-RUN npm install --no-save null-loader
+RUN npm install --no-save --legacy-peer-deps null-loader
 
 # Rebuild the source code only when needed
 FROM base AS builder

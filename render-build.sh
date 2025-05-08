@@ -3,7 +3,7 @@
 npm ci --legacy-peer-deps
 
 # Install null-loader for skipping problematic files
-npm install --no-save null-loader
+npm install --no-save --legacy-peer-deps null-loader
 
 # Create custom next.config.js to skip validation
 cat > next.config.js << EOL
