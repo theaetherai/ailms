@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: theaetherai-lms
+    runtime: docker
+    region: ohio  # or your preferred region
+    plan: standard  # choose appropriate plan
+    dockerfilePath: ./Dockerfile.custom
+    dockerContext: .
+    buildCommand: bash render-build.sh
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISH_KEY
+        sync: false
+      - key: STRIPE_CLIENT_SECRET
+        sync: false
+      - key: STRIPE_SUBSCRIPTION_PRICE_ID
+        sync: false
+      - key: WIX_OAUTH_KEY
+        sync: false
+      - key: OPEN_AI_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_VOICE_FLOW_KEY
+        sync: false
+      - key: VOICEFLOW_API_KEY
+        sync: false
+      - key: VOICEFLOW_KNOWLEDGE_BASE_API
+        value: https://api.voiceflow.com/v1/knowledge-base/docs/upload/table?overwrite=false
+      - key: NEXT_PUBLIC_HOST_URL
+        fromService:
+          name: theaetherai-lms
+          type: web
+          property: url
+      - key: NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL
+        value: https://res.cloudinary.com/dehyychku/video/upload/v1746133637/opal
+      - key: NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL
+        value: /auth/callback
+      - key: NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL
+        value: /auth/callback
+      - key: MAILER_PASSWORD
+        sync: false
+      - key: MAILER_EMAIL
+        sync: false
+      - key: CLERK_ALLOW_CLOCK_SKEW
+        value: "true"
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dehyychku
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: PRISMA_CLIENT_ENGINE_TYPE
+        value: library
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: NODE_ENV
+        value: production
+      - key: SKIP_API_ROUTES
+        value: "true"
+      - key: NEXT_SKIP_VALIDATE_ROUTE
+        value: "1"
+      - key: NEXT_SKIP_API_VALIDATION
+        value: "1"
+      - key: NEXT_SKIP_DATA_COLLECTION
+        value: "1" 
