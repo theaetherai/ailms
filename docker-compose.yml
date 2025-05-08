@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  lms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.custom
+    image: lms-app:latest
+    container_name: lms-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://opal_owner:zBwb6eIZgx0y@ep-flat-base-a5xtcuot.us-east-2.aws.neon.tech/opal?sslmode=require
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YnJpZWYtY2FsZi0xOS5jbGVyay5hY2NvdW50cy5kZXYk
+      - CLERK_SECRET_KEY=sk_test_3T86uKwpJiKeMv6EBdZi5vkLSzpPdpVktz7fMVY67H
+      - WIX_OAUTH_KEY=71497d85-463d-4083-bc76-bb201928b057
+      - OPEN_AI_KEY=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
+      - OPENAI_API_KEY=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
+      - NEXT_PUBLIC_VOICE_FLOW_KEY=6812a8f79f132e62dd6e1996
+      - VOICEFLOW_API_KEY=VF.DM.6812fd72faf415556f8932d0.56YzcQmHTefwPd21
+      - VOICEFLOW_KNOWLEDGE_BASE_API=https://api.voiceflow.com/v1/knowledge-base/docs/upload/table?overwrite=false
+      - NEXT_PUBLIC_HOST_URL=http://localhost:3000
+      - NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL=https://res.cloudinary.com/dehyychku/video/upload/v1746133637/opal
+      - NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/auth/callback
+      - NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/auth/callback
+      - MAILER_PASSWORD=xtlt labq hcvx kqya
+      - MAILER_EMAIL=ekfrimpong107@gmail.com
+      - CLERK_ALLOW_CLOCK_SKEW=true
+      - NEXT_PUBLIC_EXPRESS_SERVER_URL=http://localhost:5000
+      - EXPRESS_SERVER_URL=http://localhost:5000
+      - CLOUDINARY_CLOUD_NAME=dehyychku
+      - CLOUDINARY_API_KEY=821864697235452
+      - CLOUDINARY_API_SECRET=A5Irj5gktPK2OG67vqKzJ7bckdo
+      - PRISMA_CLIENT_ENGINE_TYPE=library
+      - NEXT_TELEMETRY_DISABLED=1
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s 

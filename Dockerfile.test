@@ -1,0 +1,15 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Create user and set permissions - Alpine syntax
+RUN addgroup -S -g 1001 nodejs
+RUN adduser -S -u 1001 -G nodejs nextjs
+
+# Test directory creation and permissions
+RUN mkdir -p .next
+RUN chown nextjs:nodejs .next
+
+USER nextjs
+
+CMD ["echo", "User setup successful!"] 
