@@ -1,14 +1,20 @@
 services:
   - type: web
     name: lms-app
-    env: node
+    runtime: docker
+    buildCommand: ""
+    startCommand: "node server.js"
+    plan: standard
     region: ohio
-    buildCommand: ./render-build.sh
-    startCommand: node server.js
+    dockerfilePath: ./Dockerfile
+    image:
+      url: docker.io/princeayiku/lms-app:latest
     healthCheckPath: /
     envVars:
+      - key: PORT
+        value: "3000"
       - key: NODE_VERSION
-        value: 18.17.0
+        value: "18.20.8"
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_HOST_URL
@@ -55,6 +61,8 @@ services:
         sync: false
       - key: CLERK_ALLOW_CLOCK_SKEW
         value: "true"
+      - key: CLERK_ENCRYPTION_KEY
+        sync: false
       - key: NEXT_PUBLIC_EXPRESS_SERVER_URL
         sync: false
       - key: EXPRESS_SERVER_URL
