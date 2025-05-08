@@ -1,72 +1,67 @@
 services:
   - type: web
-    name: theaetherai-lms
-    runtime: docker
-    region: ohio  # or your preferred region
-    plan: standard  # choose appropriate plan
-    dockerfilePath: ./Dockerfile.custom
-    dockerContext: .
-    buildCommand: bash render-build.sh
+    name: lms-app
+    env: node
+    region: ohio
+    buildCommand: ./render-build.sh
+    startCommand: node server.js
     healthCheckPath: /
     envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_HOST_URL
+        sync: false
+      - key: SKIP_API_ROUTES
+        value: "true"
+      - key: NEXT_SKIP_VALIDATE_ROUTE
+        value: "1"
+      - key: NEXT_SKIP_DATA_COLLECTION
+        value: "1"
+      - key: NEXT_SKIP_API_VALIDATION
+        value: "1"
+      - key: NEXT_SKIP_TYPE_CHECK
+        value: "1"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: PRISMA_CLIENT_ENGINE_TYPE
+        value: "library"
       - key: DATABASE_URL
         sync: false
       - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
         sync: false
       - key: CLERK_SECRET_KEY
         sync: false
-      - key: NEXT_PUBLIC_STRIPE_PUBLISH_KEY
-        sync: false
-      - key: STRIPE_CLIENT_SECRET
-        sync: false
-      - key: STRIPE_SUBSCRIPTION_PRICE_ID
-        sync: false
-      - key: WIX_OAUTH_KEY
+      - key: OPENAI_API_KEY
         sync: false
       - key: OPEN_AI_KEY
-        sync: false
-      - key: OPENAI_API_KEY
         sync: false
       - key: NEXT_PUBLIC_VOICE_FLOW_KEY
         sync: false
       - key: VOICEFLOW_API_KEY
         sync: false
       - key: VOICEFLOW_KNOWLEDGE_BASE_API
-        value: https://api.voiceflow.com/v1/knowledge-base/docs/upload/table?overwrite=false
-      - key: NEXT_PUBLIC_HOST_URL
-        fromService:
-          name: theaetherai-lms
-          type: web
-          property: url
+        sync: false
       - key: NEXT_PUBLIC_CLOUD_FRONT_STREAM_URL
-        value: https://res.cloudinary.com/dehyychku/video/upload/v1746133637/opal
+        sync: false
       - key: NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL
-        value: /auth/callback
+        value: "/auth/callback"
       - key: NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL
-        value: /auth/callback
+        value: "/auth/callback"
       - key: MAILER_PASSWORD
         sync: false
       - key: MAILER_EMAIL
         sync: false
       - key: CLERK_ALLOW_CLOCK_SKEW
         value: "true"
+      - key: NEXT_PUBLIC_EXPRESS_SERVER_URL
+        sync: false
+      - key: EXPRESS_SERVER_URL
+        sync: false
       - key: CLOUDINARY_CLOUD_NAME
-        value: dehyychku
+        sync: false
       - key: CLOUDINARY_API_KEY
         sync: false
       - key: CLOUDINARY_API_SECRET
-        sync: false
-      - key: PRISMA_CLIENT_ENGINE_TYPE
-        value: library
-      - key: NEXT_TELEMETRY_DISABLED
-        value: "1"
-      - key: NODE_ENV
-        value: production
-      - key: SKIP_API_ROUTES
-        value: "true"
-      - key: NEXT_SKIP_VALIDATE_ROUTE
-        value: "1"
-      - key: NEXT_SKIP_API_VALIDATION
-        value: "1"
-      - key: NEXT_SKIP_DATA_COLLECTION
-        value: "1" 
+        sync: false 

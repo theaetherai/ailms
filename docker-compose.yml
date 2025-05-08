@@ -9,6 +9,8 @@ services:
     container_name: lms-app
     ports:
       - "3000:3000"
+    volumes:
+      - ./server.js:/app/server.js
     environment:
       - DATABASE_URL=postgresql://opal_owner:zBwb6eIZgx0y@ep-flat-base-a5xtcuot.us-east-2.aws.neon.tech/opal?sslmode=require
       - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YnJpZWYtY2FsZi0xOS5jbGVyay5hY2NvdW50cy5kZXYk
