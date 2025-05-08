@@ -4,7 +4,7 @@ services:
     runtime: docker
     buildCommand: ""
     startCommand: "node server.js"
-    plan: standard
+    plan: free
     region: ohio
     dockerfilePath: ./Dockerfile
     image:
